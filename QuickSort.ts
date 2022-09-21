@@ -4,34 +4,30 @@ function qsAagain(array:number[],left:number,right:number):void{
     if(left >= right){
         return
     }
-    let pivot = array[(left + right) /2]
-    let index = partitionAgain(array,left,right,pivot)
-    qsAagain(array,left, index -1)
-    qsAagain(array,index,right)
-
+    let pivotIndex = partitionAgain(array,left,right)
+    qsAagain(array,left, pivotIndex -1)
+    qsAagain(array,pivotIndex + 1,right)
+    console.log(array)
 }
-function partitionAgain(array:number[],left:number,right:number,pivot:number):number{
-    while(left <= right){
-        while(array[left] < pivot){
-            left++
+function partitionAgain(array:number[],left:number,right:number):number{
+    const pivot = array[right]
+    let idx = left-1
+    for(let i = left; i < right; i++){
+        if (array[i] <= pivot){
+            idx++
+            const tmp = array[i]
+            array[i] = array[idx]
+            array[idx] = tmp
         }
-            while(array[right] > pivot){
-                right--
-            }
-                if(left <= right){
-                    let tmp = array[right];
-                    array[right] = array[left];
-                    array[left]= tmp;
-                    left++;
-                    right--;
-                }
     }
-    return left
+    idx++
+    array[right] = array[idx]
+    array[idx] = pivot
+    return idx
 }
 
 function mainsqs(array:number[]):void{
     qsAagain(array,0,array.length-1)
 }
 
-mainsqs([9,2,6,4,3,5,7])
-assert(mainsqs([2,3,4,5,6,7,9]))
+mainsqs([9,2,8,6,4,3,5,7])
